@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<AnchorPane prefHeight="495.0" prefWidth="860.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="form.Controller">
+   <children>
+      <TreeView fx:id="treeView" layoutX="10.0" layoutY="10.0" prefHeight="475.0" prefWidth="400.0" />
+      <Button layoutX="430.0" layoutY="460.0" mnemonicParsing="false" onMouseClicked="#loadData" text="Загрузить данные" />
+      <TabPane fx:id="rootTabPane" layoutX="430.0" layoutY="10.0" prefHeight="420.0" prefWidth="415.0" tabClosingPolicy="UNAVAILABLE">
+         <tabs>
+            <Tab text="Добавить группу">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="tfAddGroupName" layoutX="86.0" layoutY="14.0" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" />
+                        <Label layoutX="14.0" layoutY="18.0" text="Название" />
+                        <Button layoutX="86.0" layoutY="48.0" mnemonicParsing="false" onMouseClicked="#addGroup" prefHeight="25.0" prefWidth="150.0" text="Добавить" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+      <TabPane fx:id="groupTabPane" layoutX="430.0" layoutY="10.0" prefHeight="420.0" prefWidth="415.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+        <tabs>
+          <Tab text="Информация">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="tfGroupInfoName" editable="false" layoutX="158.0" layoutY="10.0" />
+                        <Label layoutX="14.0" layoutY="14.0" text="Название" />
+                        <TextField fx:id="tfGroupInfoStudents" editable="false" layoutX="158.0" layoutY="42.0" />
+                        <Label layoutX="14.0" layoutY="46.0" text="Количество студентов" />
+                        <TextField fx:id="tfGroupInfoAvgRating" editable="false" layoutX="158.0" layoutY="108.0" />
+                        <Label layoutX="14.0" layoutY="112.0" text="Средний рейтинг" />
+                        <TextField fx:id="tfGroupMaxRating" editable="false" layoutX="158.0" layoutY="76.0" />
+                        <Label layoutX="14.0" layoutY="80.0" text="Максимальный рейтинг" />
+                        <Label layoutX="14.0" layoutY="147.0" text="Минимальный рейтинг" />
+                        <TextField fx:id="tfGroupInfoMinRating" editable="false" layoutX="158.0" layoutY="143.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Добавить студента">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="tfAddStudentLastName" layoutX="158.0" layoutY="10.0" />
+                        <Label layoutX="14.0" layoutY="14.0" text="Фамилия" />
+                        <TextField fx:id="tfAddStudentFirstName" layoutX="158.0" layoutY="42.0" />
+                        <Label layoutX="14.0" layoutY="46.0" text="Имя" />
+                        <TextField fx:id="tfAddStudentRating" layoutX="158.0" layoutY="108.0" />
+                        <Label layoutX="14.0" layoutY="112.0" text="Рейтинг" />
+                        <TextField fx:id="tfAddStudentMiddleName" layoutX="158.0" layoutY="76.0" />
+                        <Label layoutX="14.0" layoutY="80.0" text="Отчество" />
+                        <Button layoutX="158.0" layoutY="143.0" mnemonicParsing="false" onMouseClicked="#addStudent" prefHeight="25.0" prefWidth="150.0" text="Добавить" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Переименовать">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="tfGroupNewName" layoutX="84.0" layoutY="14.0" />
+                        <Label layoutX="14.0" layoutY="18.0" text="Название" />
+                        <Button layoutX="84.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#renameGroup" prefHeight="25.0" prefWidth="150.0" text="Переименовать" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Удалить группу">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="182.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#deleteGroup" text="Удалить" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <TabPane fx:id="studentTabPane" layoutX="430.0" layoutY="10.0" prefHeight="420.0" prefWidth="415.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+         <tabs>
+            <Tab text="Информация">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="tfStudentInfoLastName" editable="false" layoutX="158.0" layoutY="10.0" />
+                        <Label layoutX="14.0" layoutY="14.0" text="Фамилия" />
+                        <TextField fx:id="tfStudentInfoFirstName" editable="false" layoutX="158.0" layoutY="42.0" />
+                        <Label layoutX="14.0" layoutY="46.0" text="Имя" />
+                        <TextField fx:id="tfStudentInfoGroup" editable="false" layoutX="158.0" layoutY="108.0" />
+                        <Label layoutX="14.0" layoutY="112.0" text="Группа" />
+                        <TextField fx:id="tfStudentInfoMiddleName" editable="false" layoutX="158.0" layoutY="76.0" />
+                        <Label layoutX="14.0" layoutY="80.0" text="Отчество" />
+                        <Label layoutX="14.0" layoutY="147.0" text="Рейтинг" />
+                        <TextField fx:id="tfStudentInfoRating" editable="false" layoutX="158.0" layoutY="143.0" />
+                        <Label fx:id="headLabel" layoutX="14.0" layoutY="187.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Редактировать">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="tfEditStudentLastName" layoutX="158.0" layoutY="10.0" />
+                        <Label layoutX="14.0" layoutY="14.0" text="Фамилия" />
+                        <TextField fx:id="tfEditStudentFirstName" layoutX="158.0" layoutY="42.0" />
+                        <Label layoutX="14.0" layoutY="46.0" text="Имя" />
+                        <TextField fx:id="tfEditStudentGroup" layoutX="158.0" layoutY="108.0" />
+                        <Label layoutX="14.0" layoutY="112.0" text="Группа" />
+                        <TextField fx:id="tfEditStudentMiddleName" layoutX="158.0" layoutY="76.0" />
+                        <Label layoutX="14.0" layoutY="80.0" text="Отчество" />
+                        <Label layoutX="14.0" layoutY="147.0" text="Рейтинг" />
+                        <TextField fx:id="tfEditStudentRating" layoutX="158.0" layoutY="143.0" />
+                        <Button layoutX="158.0" layoutY="181.0" mnemonicParsing="false" onMouseClicked="#editStudent" prefHeight="25.0" prefWidth="150.0" text="Сохранить" />
+                        <Button fx:id="buttonToggleHead" layoutX="158.0" layoutY="220.0" mnemonicParsing="false" onMouseClicked="#toggleHead" prefHeight="25.0" prefWidth="150.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Удалить">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="182.0" layoutY="211.0" mnemonicParsing="false" onMouseClicked="#deleteStudent" text="Удалить" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+      <Button layoutX="561.0" layoutY="460.0" mnemonicParsing="false" onMouseClicked="#saveData" text="Сохранить данные" />
+      <Button fx:id="buttonUndo" layoutX="754.0" layoutY="460.0" mnemonicParsing="false" onMouseClicked="#undo" />
+      <Button fx:id="buttonRedo" layoutX="799.0" layoutY="460.0" mnemonicParsing="false" onMouseClicked="#redo" />
+   </children>
+</AnchorPane>
