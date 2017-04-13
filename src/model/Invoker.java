@@ -1,22 +1,27 @@
 package model;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Invoker {
-    private Stack<Command> done = new Stack<>();
-    private Stack<Command> undone = new Stack<>();
+    private static final int LIMIT = 100;
+    private Deque<Command> done = new ArrayDeque<>();
+    private Deque<Command> undone = new ArrayDeque<>();
 
     public boolean canUndo() {
-        return !done.empty();
+        return !done.isEmpty();
     }
 
     public boolean canRedo() {
-        return !undone.empty();
+        return !undone.isEmpty();
     }
 
     public void execute(Command command) {
         command.execute();
         done.push(command);
+        if (done.size() > LIMIT) {
+            done.pollLast();
+        }
         undone.clear();
     }
 
@@ -27,6 +32,9 @@ public class Invoker {
         Command command = done.pop();
         command.rollback();
         undone.push(command);
+        if (undone.size() > LIMIT) {
+            undone.pollLast();
+        }
     }
 
     public void redo() {
