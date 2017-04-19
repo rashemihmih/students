@@ -6,12 +6,12 @@ import java.io.File;
 
 public class DataLoaderFactory {
     public FileDataLoader getDataLoader(File file) {
-        String extenstion = StringUtils.substringAfterLast(file.getName(), ".");
-        if ("json".equalsIgnoreCase(extenstion)) {
+        String extension = StringUtils.substringAfterLast(file.getName(), ".");
+        if ("json".equalsIgnoreCase(extension)) {
             return new JsonDataLoader(file);
-        } else if ("xml".equalsIgnoreCase(extenstion)) {
+        } else if ("xml".equalsIgnoreCase(extension)) {
             return new XmlDataLoader(file);
-        } else if ("csv".equalsIgnoreCase(extenstion)) {
+        } else if ("csv".equalsIgnoreCase(extension)) {
             return new CsvDataLoader(file);
         }
         return null;
