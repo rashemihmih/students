@@ -1,9 +1,9 @@
 package model.command;
 
+import api.entity.Group;
+import api.entity.Root;
+import api.entity.Student;
 import model.Command;
-import model.tree.Group;
-import model.tree.Root;
-import model.tree.Student;
 import org.apache.commons.lang3.StringUtils;
 
 public class EditStudentCommand implements Command {

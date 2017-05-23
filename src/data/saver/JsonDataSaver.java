@@ -1,10 +1,10 @@
 package data.saver;
 
+import api.entity.Group;
+import api.entity.Root;
+import api.entity.Student;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import model.tree.Group;
-import model.tree.Root;
-import model.tree.Student;
 
 import java.io.BufferedWriter;
 import java.io.File;

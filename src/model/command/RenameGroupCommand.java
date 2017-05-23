@@ -1,7 +1,7 @@
 package model.command;
 
+import api.entity.Group;
 import model.Command;
-import model.tree.Group;
 
 public class RenameGroupCommand implements Command {
     private Group group;

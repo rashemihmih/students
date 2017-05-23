@@ -1,7 +1,7 @@
 package model.command;
 
+import api.entity.Student;
 import model.Command;
-import model.tree.Student;
 
 public class DeleteStudentCommand implements Command {
     private Student student;

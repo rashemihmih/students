@@ -1,20 +1,23 @@
 package model;
 
+import api.entity.Group;
+import api.entity.Root;
+import api.entity.Student;
 import data.loader.DataLoaderFactory;
 import data.loader.FileDataLoader;
 import data.saver.JsonDataSaver;
 import form.Controller;
 import model.command.*;
-import model.tree.Group;
-import model.tree.Root;
-import model.tree.Student;
+import model.tree.GroupImpl;
+import model.tree.RootImpl;
+import model.tree.StudentImpl;
 
 import java.io.File;
 import java.io.IOException;
 
 public class Model {
     private Controller controller;
-    private Root root = new Root();
+    private Root root = new RootImpl();
     private Invoker invoker = new Invoker();
 
     public Model(Controller controller) {
@@ -60,7 +63,7 @@ public class Model {
             return;
         }
         try {
-            Group group = new Group(name);
+            Group group = new GroupImpl(name);
             invoker.execute(new AddGroupCommand(root, group));
             controller.update();
         } catch (IllegalArgumentException e) {
@@ -70,7 +73,7 @@ public class Model {
 
     public void addStudent(Group group, String firstName, String lastName, String middleName, int rating) {
         try {
-            Student student = new Student(firstName, lastName, middleName, rating, group, false);
+            Student student = new StudentImpl(firstName, lastName, middleName, rating, group, false);
             invoker.execute(new AddStudentCommand(student));
             controller.update();
         } catch (IllegalArgumentException e) {

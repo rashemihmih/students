@@ -1,26 +1,35 @@
 package form;
 
+import api.View;
+import api.entity.Entity;
+import api.entity.Group;
+import api.entity.Root;
+import api.entity.Student;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.Model;
-import model.tree.Group;
-import model.tree.Root;
-import model.tree.Student;
-import model.tree.TreeElement;
+import settings.Settings;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-public class Controller {
+public class Controller implements View {
     public static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#.###");
     private static Controller instance;
     private Model model;
+    private Parent root;
+    private Stage settingsStage = new Stage();
     @FXML
-    private TreeView<TreeElement> treeView;
+    private TreeView<Entity> treeView;
     @FXML
     private TabPane rootTabPane;
     @FXML
@@ -78,7 +87,6 @@ public class Controller {
     @FXML
     private Button buttonRedo;
 
-
     public Controller() {
         instance = this;
     }
@@ -95,20 +103,35 @@ public class Controller {
         this.model = model;
     }
 
+    public void setRoot(Parent root) {
+        this.root = root;
+    }
+
+    public Stage getSettingsStage() {
+        return settingsStage;
+    }
+
     @FXML
     private void initialize() {
         treeView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) {
                 return;
             }
-            TreeElement value = newValue.getValue();
+            Entity value = newValue.getValue();
             processSelect(value);
         });
         buttonUndo.setGraphic(new ImageView(new Image("/res/undo.png")));
         buttonRedo.setGraphic(new ImageView(new Image("/res/redo.png")));
+        try {
+            Parent settingsForm = FXMLLoader.load(getClass().getResource("/form/settings.fxml"));
+            settingsStage.setTitle("Настройки");
+            settingsStage.setScene(new Scene(settingsForm));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void processSelect(TreeElement value) {
+    private void processSelect(Entity value) {
         switch (value.getType()) {
             case ROOT:
                 showRootPanel();
@@ -184,10 +207,16 @@ public class Controller {
     private void saveData() {
         File file = new FileChooser().showSaveDialog(null);
         if (file == null) {
-            showDialog("Загрузка данных отменена", "Файл не выбран");
+            showDialog("Сохранение данных отменено", "Файл не выбран");
             return;
         }
         model.saveData(file);
+    }
+
+    @FXML
+    private void settings() {
+        SettingsForm.getInstance().init();
+        settingsStage.show();
     }
 
     @FXML
@@ -291,8 +320,9 @@ public class Controller {
         model.deleteStudent(student);
     }
 
-    private Group getSelectedGroup() {
-        TreeItem<TreeElement> selectedItem = treeView.getSelectionModel().getSelectedItem();
+    @Override
+    public Group getSelectedGroup() {
+        TreeItem<Entity> selectedItem = treeView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             return null;
         }
@@ -303,8 +333,9 @@ public class Controller {
         }
     }
 
-    private Student getSelectedStudent() {
-        TreeItem<TreeElement> selectedItem = treeView.getSelectionModel().getSelectedItem();
+    @Override
+    public Student getSelectedStudent() {
+        TreeItem<Entity> selectedItem = treeView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             return null;
         }
@@ -315,6 +346,7 @@ public class Controller {
         }
     }
 
+    @Override
     public void showDialog(String header, String content) {
         Dialog<String> dialog = new Dialog<>();
         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
@@ -324,14 +356,15 @@ public class Controller {
         dialog.show();
     }
 
+    @Override
     public void update() {
-        TreeItem<TreeElement> selectedItem = treeView.getSelectionModel().getSelectedItem();
+        TreeItem<Entity> selectedItem = treeView.getSelectionModel().getSelectedItem();
         Root root = model.getRoot();
-        TreeItem<TreeElement> rootItem = new TreeItem<>(root);
+        TreeItem<Entity> rootItem = new TreeItem<>(root);
         rootItem.setExpanded(true);
         treeView.setRoot(rootItem);
         for (Group group : root.getGroups()) {
-            TreeItem<TreeElement> groupItem = new TreeItem<>(group);
+            TreeItem<Entity> groupItem = new TreeItem<>(group);
             groupItem.setExpanded(true);
             rootItem.getChildren().add(groupItem);
             for (Student student : group.getStudents()) {
@@ -345,5 +378,9 @@ public class Controller {
     private void checkUndoRedo() {
         buttonUndo.setDisable(!model.canUndo());
         buttonRedo.setDisable(!model.canRedo());
+    }
+
+    public void updateSettings() {
+        root.styleProperty().set("-fx-font-size: " + Settings.getFontSize());
     }
 }

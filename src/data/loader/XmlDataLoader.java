@@ -1,8 +1,9 @@
 package data.loader;
 
-import model.tree.Group;
-import model.tree.Root;
-import model.tree.Student;
+import api.entity.Group;
+import api.entity.Root;
+import model.tree.RootImpl;
+import model.tree.StudentImpl;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -19,7 +20,7 @@ class XmlDataLoader extends FileDataLoader {
 
     @Override
     public Root loadData() {
-        Root root = new Root();
+        Root root = new RootImpl();
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document document = documentBuilder.parse(file);
@@ -60,7 +61,7 @@ class XmlDataLoader extends FileDataLoader {
                     if (lastName == null || firstName == null || middleName == null || rating == -1) {
                         throw new RuntimeException("Некорректный формат");
                     }
-                    group.addStudent(new Student(firstName, lastName, middleName, rating, group, head));
+                    group.addStudent(new StudentImpl(firstName, lastName, middleName, rating, group, head));
                 }
             }
         } catch (ParserConfigurationException | SAXException | IOException e) {

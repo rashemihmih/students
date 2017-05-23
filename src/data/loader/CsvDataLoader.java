@@ -1,8 +1,10 @@
 package data.loader;
 
-import model.tree.Group;
-import model.tree.Root;
-import model.tree.Student;
+
+import api.entity.Group;
+import api.entity.Root;
+import model.tree.RootImpl;
+import model.tree.StudentImpl;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +17,7 @@ class CsvDataLoader extends FileDataLoader {
 
     @Override
     public Root loadData() throws IOException {
-        Root root = new Root();
+        Root root = new RootImpl();
         Files.lines(file.toPath()).forEach(s -> {
             String[] split = s.split(";");
             String lastName = split[0];
@@ -24,7 +26,7 @@ class CsvDataLoader extends FileDataLoader {
             int rating = Integer.parseInt(split[3]);
             Group group = root.getOrAddGroup(split[4]);
             boolean head = "head".equals(split[5]);
-            group.addStudent(new Student(firstName, lastName, middleName, rating, group, head));
+            group.addStudent(new StudentImpl(firstName, lastName, middleName, rating, group, head));
         });
         return root;
     }

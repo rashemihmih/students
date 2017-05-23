@@ -1,8 +1,8 @@
 package model.command;
 
+import api.entity.Group;
+import api.entity.Root;
 import model.Command;
-import model.tree.Group;
-import model.tree.Root;
 
 public class DeleteGroupCommand implements Command {
     private Root root;
