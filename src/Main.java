@@ -6,10 +6,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.Model;
 
+
 public class Main extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("form/form.fxml"));
         primaryStage.setTitle("Студенты");
         primaryStage.setScene(new Scene(root));
