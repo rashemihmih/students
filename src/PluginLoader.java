@@ -27,9 +27,8 @@ public class PluginLoader {
                             try {
                                 return classLoader.loadClass(s);
                             } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
+                                return null;
                             }
-                            return null;
                         }).filter(Objects::nonNull).filter(clazz -> {
                             for (Class i : clazz.getInterfaces()) {
                                 if (i.getName().endsWith("." + Plugin.class.getSimpleName())) {
@@ -41,9 +40,8 @@ public class PluginLoader {
                             try {
                                 return (Plugin) clazz.newInstance();
                             } catch (InstantiationException | IllegalAccessException e) {
-                                e.printStackTrace();
+                                return null;
                             }
-                            return null;
                         }).filter(Objects::nonNull).collect(Collectors.toList()));
             } catch (IOException e) {
                 e.printStackTrace();
