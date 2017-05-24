@@ -1,3 +1,5 @@
+package plugin;
+
 import api.Plugin;
 
 import java.io.File;

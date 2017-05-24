@@ -1,6 +1,7 @@
 package form;
 
-import api.View;
+import api.Plugin;
+import api.PluginApi;
 import api.entity.Entity;
 import api.entity.Group;
 import api.entity.Root;
@@ -21,11 +22,14 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Controller implements View {
+public class Controller implements PluginApi {
     public static final NumberFormat NUMBER_FORMAT = new DecimalFormat("#.###");
     private static Controller instance;
     private Model model;
+    private List<Plugin> plugins = new ArrayList<>();
     private Parent root;
     private Stage settingsStage = new Stage();
     @FXML
@@ -134,15 +138,20 @@ public class Controller implements View {
     private void processSelect(Entity value) {
         switch (value.getType()) {
             case ROOT:
+                plugins.forEach(plugin -> plugin.onRootSelected((Root) value));
                 showRootPanel();
                 break;
             case GROUP:
+                Group group = (Group) value;
+                plugins.forEach(plugin -> plugin.onGroupSelected(group));
                 showGroupPanel();
-                showGroupInfo((Group) value);
+                showGroupInfo(group);
                 break;
             case STUDENT:
+                Student student = (Student) value;
+                plugins.forEach(plugin -> plugin.onStudentSelected(student));
                 showStudentPanel();
-                showStudentInfo((Student) value);
+                showStudentInfo(student);
                 break;
         }
     }
@@ -320,7 +329,6 @@ public class Controller implements View {
         model.deleteStudent(student);
     }
 
-    @Override
     public Group getSelectedGroup() {
         TreeItem<Entity> selectedItem = treeView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
@@ -333,7 +341,6 @@ public class Controller implements View {
         }
     }
 
-    @Override
     public Student getSelectedStudent() {
         TreeItem<Entity> selectedItem = treeView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
@@ -372,12 +379,33 @@ public class Controller implements View {
             }
         }
         treeView.getSelectionModel().select(selectedItem);
+        plugins.forEach(Plugin::onUpdate);
         checkUndoRedo();
     }
 
     private void checkUndoRedo() {
         buttonUndo.setDisable(!model.canUndo());
         buttonRedo.setDisable(!model.canRedo());
+    }
+
+    @Override
+    public void addRootTab(Tab tab) {
+        rootTabPane.getTabs().add(tab);
+    }
+
+    @Override
+    public void addGroupTab(Tab tab) {
+        groupTabPane.getTabs().add(tab);
+    }
+
+    @Override
+    public void addStudentTab(Tab tab) {
+        studentTabPane.getTabs().add(tab);
+    }
+
+    public void addPlugin(Plugin plugin) {
+        plugin.plugIn(this);
+        plugins.add(plugin);
     }
 
     public void updateSettings() {
